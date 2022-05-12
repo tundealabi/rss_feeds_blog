@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ViewModule } from './view/view.module';
+import { RssFeedModule } from './rss-feed/rss-feed.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ViewModule } from './view/view.module';
       },
     }),
     ViewModule,
+    RssFeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
