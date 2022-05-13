@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { ViewModule } from './view/view.module';
 import { RssFeedModule } from './rss-feed/rss-feed.module';
 import { RssParserModule } from './rss-parser/rss-parser.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -21,9 +23,11 @@ import { RssParserModule } from './rss-parser/rss-parser.module';
         };
       },
     }),
+    ScheduleModule.forRoot(),
     ViewModule,
     RssFeedModule,
     RssParserModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Delete,
+  Param,
+  Patch,
+} from '@nestjs/common';
 import { CreateRssFeedDto } from './dto';
 import { RssFeedService } from './rss-feed.service';
 import { RssFeed } from './schema';
@@ -17,5 +25,12 @@ export class RssFeedController {
   @Delete(':id')
   delete(@Param('id') id: string): Promise<{ id: string; success: boolean }> {
     return this.rssFeedService.deleteById(id);
+  }
+  @Patch(':id/:itemId')
+  patchFeedItem(
+    @Param('id') id: string,
+    @Param('itemId') itemId: string,
+  ): Promise<{ id: string; success: boolean }> {
+    return this.rssFeedService.patchFeedItem(id, itemId);
   }
 }

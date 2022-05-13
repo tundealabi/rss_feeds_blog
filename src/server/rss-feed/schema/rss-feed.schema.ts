@@ -25,6 +25,9 @@ export class RssFeed {
   title: string;
 
   @Prop({ required: true, trim: true, unique: true })
+  feedUrl: string;
+
+  @Prop({ required: true, trim: true })
   link: string;
 
   @Prop({ required: true, trim: true })

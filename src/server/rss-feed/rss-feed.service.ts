@@ -39,4 +39,50 @@ export class RssFeedService {
       success: !!deletedRssFeed,
     };
   }
+  async patchFeedItem(
+    id: string,
+    itemId: string,
+  ): Promise<{ id: string; success: boolean }> {
+    await this.rssFeedModel.findOneAndUpdate(
+      { _id: id, 'items._id': itemId },
+      {
+        $set: {
+          'items.$.isRead': true,
+        },
+      },
+    );
+    return {
+      id,
+      success: true,
+    };
+  }
+  async pollRssFeeds(): Promise<void> {
+    const rssLinks = await this.rssFeedModel
+      .find({})
+      .select(['feedUrl', 'items']);
+    rssLinks.forEach(async (rssLink) => {
+      try {
+        const rssFeed = await this.rssParserService.parse(rssLink.feedUrl);
+        rssFeed.items.map((item) => {
+          const findRssItem = rssLink.items.find(
+            (rssItem) =>
+              rssItem.title === item.title &&
+              rssItem.publishedDate === item.pubDate &&
+              rssItem.isRead,
+          );
+          if (findRssItem) {
+            item.isRead = true;
+          }
+          return item;
+        });
+        const formatRssFeeds = this.rssParserService.formatFeed(rssFeed);
+        await this.rssFeedModel.findByIdAndUpdate(rssLink.id, formatRssFeeds);
+        // eslint-disable-next-line no-console
+        console.log('successfully polled and updated rss feed');
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('error', error.message);
+      }
+    });
+  }
 }

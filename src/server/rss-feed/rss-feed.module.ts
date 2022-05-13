@@ -12,5 +12,6 @@ import { RssParserModule } from '../rss-parser/rss-parser.module';
   ],
   providers: [RssFeedService],
   controllers: [RssFeedController],
+  exports: [RssFeedService],
 })
 export class RssFeedModule {}
