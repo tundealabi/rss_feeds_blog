@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type RssFeedDocument = RssFeed & Document;
 
 @Schema()
-class Feed {
+class FeedItem {
   @Prop({ required: true })
   title: string;
   @Prop({ required: true })
@@ -13,6 +13,10 @@ class Feed {
   publishedDate: string;
   @Prop({ default: false })
   isRead: boolean;
+  @Prop({ required: true, trim: true })
+  link: string;
+  @Prop({ required: true, trim: true })
+  image: string;
 }
 
 @Schema({ timestamps: true })
@@ -23,8 +27,11 @@ export class RssFeed {
   @Prop({ required: true, trim: true, unique: true })
   link: string;
 
-  @Prop([Feed])
-  feeds: Feed[];
+  @Prop({ required: true, trim: true })
+  image: string;
+
+  @Prop([FeedItem])
+  items: FeedItem[];
 }
 
 export const RssFeedSchema = SchemaFactory.createForClass(RssFeed);

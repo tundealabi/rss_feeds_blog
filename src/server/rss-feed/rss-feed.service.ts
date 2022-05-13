@@ -1,20 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { RssFeed, RssFeedDocument } from './schema';
 import { CreateRssFeedDto } from './dto';
+import { RssParserService } from '../rss-parser/rss-parser.service';
 
 @Injectable()
 export class RssFeedService {
   constructor(
     @InjectModel(RssFeed.name) private rssFeedModel: Model<RssFeedDocument>,
+    private readonly rssParserService: RssParserService,
   ) {}
   async create(createRssFeedDto: CreateRssFeedDto): Promise<RssFeed> {
-    const createdCat = await this.rssFeedModel.create({
-      ...createRssFeedDto,
-      feeds: [],
-    });
-    return createdCat;
+    try {
+      const rssFeed = await this.rssParserService.parse(
+        createRssFeedDto.feedUrl,
+      );
+      const formatRssFeeds = this.rssParserService.formatFeed(rssFeed);
+      const createdRss = await this.rssFeedModel.create(formatRssFeeds);
+      return createdRss;
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new BadRequestException(
+          'this rss feed url exsist already. please use a different url.',
+        );
+      }
+      return error.response;
+    }
   }
   async getAll(): Promise<RssFeed[]> {
     const rssFeeds = await this.rssFeedModel.find().exec();
