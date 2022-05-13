@@ -10,6 +10,10 @@ export class ViewController {
   public async showHome(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
+  @Get('following')
+  public async showFollowing(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
 
   @Get('_next*')
   public async assets(@Req() req: Request, @Res() res: Response) {

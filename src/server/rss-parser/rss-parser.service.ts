@@ -1,11 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import * as Parser from 'rss-parser';
 
 @Injectable()
 export class RssParserService {
   async parse(url: string) {
-    // type CustomFeed = { foo: string };
-    // type CustomItem = { bar: number };
     try {
       const parser: Parser = new Parser();
       const feed = await parser.parseURL(url);
@@ -14,6 +16,9 @@ export class RssParserService {
         ...feed,
       };
     } catch (error) {
+      if (error.message.includes('timed out')) {
+        throw new RequestTimeoutException('took too long to parse the feed');
+      }
       throw new BadRequestException(
         'could not read url. did you provide a valid rss feed url?',
       );
@@ -26,11 +31,12 @@ export class RssParserService {
       link: feed.link,
       image: feed.image.url,
       items: feed.items
+        .slice(0, 10)
         .map((item) => ({
           title: item.title,
-          description: item.content,
+          description: item.contentSnippet,
           link: item.link || feed.link,
-          image: item.enclosure?.url || '',
+          image: item.itunes?.image || feed.image.url,
           publishedDate: item.pubDate,
           isRead: item.isRead || false,
         }))

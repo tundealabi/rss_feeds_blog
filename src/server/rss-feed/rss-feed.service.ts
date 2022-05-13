@@ -25,7 +25,7 @@ export class RssFeedService {
           'this rss feed url exsist already. please use a different url.',
         );
       }
-      return error.response;
+      throw error;
     }
   }
   async getAll(): Promise<RssFeed[]> {
@@ -78,7 +78,9 @@ export class RssFeedService {
         const formatRssFeeds = this.rssParserService.formatFeed(rssFeed);
         await this.rssFeedModel.findByIdAndUpdate(rssLink.id, formatRssFeeds);
         // eslint-disable-next-line no-console
-        console.log('successfully polled and updated rss feed');
+        console.log(
+          'successfully polled and updated rss feed ' + rssLink.feedUrl,
+        );
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log('error', error.message);
