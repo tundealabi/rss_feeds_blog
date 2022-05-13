@@ -1,6 +1,6 @@
 import { IsUrl } from 'class-validator';
 
-export class CreateRssFeedDto {
+export class RssParserDto {
   @IsUrl()
   feedUrl: string;
 }

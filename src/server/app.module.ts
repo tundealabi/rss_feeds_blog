@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ViewModule } from './view/view.module';
 import { RssFeedModule } from './rss-feed/rss-feed.module';
+import { RssParserModule } from './rss-parser/rss-parser.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RssFeedModule } from './rss-feed/rss-feed.module';
     }),
     ViewModule,
     RssFeedModule,
+    RssParserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
