@@ -15,9 +15,8 @@ const RssFeeds = ({ type }: { type: 'following' | 'manage' }) => {
       ) : (
         feeds.map((feed) => {
           return (
-            <RssFeedsContainer>
+            <RssFeedsContainer key={feed._id}>
               <RssFeed
-                key={feed._id}
                 id={feed._id}
                 image={feed.image}
                 title={feed.title}

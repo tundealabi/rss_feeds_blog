@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useSWRConfig } from 'swr';
 import { IRssFeed } from './rss-feed.interface';
 import {
   RssFeedContainer,
@@ -10,6 +12,16 @@ import {
 } from './RssFeed.styled';
 
 const RssFeed = ({ id, image, title, link, type }: IRssFeed) => {
+  const { mutate } = useSWRConfig();
+  const handleDelete = async () => {
+    try {
+      const resp = await axios.delete(`/rss-feeds/${id}`);
+      mutate('/rss-feeds');
+      alert('RSS feed deleted successfully');
+    } catch (error: any) {
+      alert('Error deleting RSS feed');
+    }
+  };
   return (
     <RssFeedContainer>
       <RssFeedContainerLeft>
@@ -17,15 +29,13 @@ const RssFeed = ({ id, image, title, link, type }: IRssFeed) => {
       </RssFeedContainerLeft>
       <RssFeedContainerRight>
         <RssFeedTitle>{title}</RssFeedTitle>
-        <RssFeedSiteLink href={link} target="_blank">
-          visit page
-        </RssFeedSiteLink>
+        {type === 'following' && (
+          <RssFeedSiteLink href={link} target="_blank">
+            visit page
+          </RssFeedSiteLink>
+        )}
         {type === 'manage' && (
-          <RssFeedDeleteButton
-            onClick={() => {
-              console.log('delete feed: ' + id);
-            }}
-          >
+          <RssFeedDeleteButton onClick={handleDelete}>
             delete
           </RssFeedDeleteButton>
         )}

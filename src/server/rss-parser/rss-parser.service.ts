@@ -20,7 +20,7 @@ export class RssParserService {
         throw new RequestTimeoutException('took too long to parse the feed');
       }
       throw new BadRequestException(
-        'could not read url. did you provide a valid rss feed url?',
+        'could not parse url. did you provide a valid rss feed url?',
       );
     }
   }

@@ -1,6 +1,11 @@
 import { IsUrl } from 'class-validator';
 
 export class CreateRssFeedDto {
-  @IsUrl()
+  @IsUrl(
+    {},
+    {
+      message: 'The url is not valid',
+    },
+  )
   feedUrl: string;
 }

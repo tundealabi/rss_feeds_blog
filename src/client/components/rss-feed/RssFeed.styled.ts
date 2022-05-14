@@ -32,7 +32,14 @@ const RssFeedSiteLink = styled.a`
   text-transform: capitalize;
 `;
 
-const RssFeedDeleteButton = styled.button``;
+const RssFeedDeleteButton = styled.button`
+  /* border-radius: 1.875rem; */
+  border-radius: 0.4rem;
+  height: 2.375rem;
+  width: 4.375rem;
+  margin-top: 1rem;
+  text-transform: capitalize;
+`;
 
 export {
   RssFeedContainer,

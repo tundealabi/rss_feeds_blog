@@ -12,6 +12,7 @@ const PageMainHeading = styled.h1`
 
   & > a {
     font-size: 0.7rem;
+    text-decoration: none;
   }
 `;
 
