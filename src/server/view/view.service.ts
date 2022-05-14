@@ -10,6 +10,7 @@ export class ViewService implements OnModuleInit {
 
   constructor(private configService: ConfigService) {}
 
+  // nextjs setup
   async onModuleInit(): Promise<void> {
     try {
       this.server = createServer({

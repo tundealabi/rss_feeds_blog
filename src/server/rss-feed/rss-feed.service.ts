@@ -15,10 +15,13 @@ export class RssFeedService {
   ) {}
   async create(createRssFeedDto: CreateRssFeedDto): Promise<RssFeed> {
     try {
+      // parse the xml
       const rssFeed = await this.rssParserService.parse(
         createRssFeedDto.feedUrl,
       );
+      // filter needed properties
       const formatRssFeeds = this.rssParserService.formatFeed(rssFeed);
+      // create the rss feed - save to the DB
       const createdRss = await this.rssFeedModel.create(formatRssFeeds);
       return createdRss;
     } catch (error) {
@@ -31,8 +34,11 @@ export class RssFeedService {
     }
   }
   async getAll(): Promise<RssFeed[]> {
+    // get all rss feeds stored in the DB
     const rssFeeds = await this.rssFeedModel.find().exec();
+    // get the manage data - polling frequency and preview length
     const manage = await this.manageService.getManageData();
+    // use the preview length to limit the number of items to be displayed
     return rssFeeds.map((rssFeed) => {
       rssFeed.items = rssFeed.items.slice(0, Number(manage.previewLength));
       return rssFeed;
@@ -49,6 +55,7 @@ export class RssFeedService {
     id: string,
     itemId: string,
   ): Promise<{ id: string; success: boolean }> {
+    // mark a feed item as read
     await this.rssFeedModel.findOneAndUpdate(
       { _id: id, 'items._id': itemId },
       {
@@ -63,11 +70,13 @@ export class RssFeedService {
     };
   }
   async pollRssFeeds(): Promise<void> {
+    // get all rss feeds stored in the DB
     const rssLinks = await this.rssFeedModel
       .find({})
       .select(['feedUrl', 'items']);
     rssLinks.forEach(async (rssLink) => {
       try {
+        // parse the xml to get updated feed items
         const rssFeed = await this.rssParserService.parse(rssLink.feedUrl);
         rssFeed.items.map((item) => {
           const findRssItem = rssLink.items.find(
@@ -81,7 +90,9 @@ export class RssFeedService {
           }
           return item;
         });
+        // filter needed properties
         const formatRssFeeds = this.rssParserService.formatFeed(rssFeed);
+        // update the rss feed with the new items if any
         await this.rssFeedModel.findByIdAndUpdate(rssLink.id, formatRssFeeds);
         // eslint-disable-next-line no-console
         console.log(

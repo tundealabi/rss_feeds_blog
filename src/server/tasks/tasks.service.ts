@@ -13,6 +13,7 @@ export class TasksService implements OnModuleInit {
   ) {}
 
   async updateJob(pollingFrequency: string) {
+    // stop the current job and add a new one whenever the polling frequency is updated
     this.schedulerRegistry.deleteCronJob('poll-rss-feed');
     await this.addCronJob(pollingFrequency);
   }
@@ -25,6 +26,7 @@ export class TasksService implements OnModuleInit {
   }
 
   async onModuleInit() {
+    // get the polling frequency from the database on initilization to add the cron job
     const manage = await this.manageService.getManageData();
     if (manage) {
       await this.addCronJob(manage.pollingFrequency);

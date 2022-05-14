@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const SelectFieldContainer = styled.div`
-  display: flex;
   align-items: center;
   column-gap: 0.4rem;
+  display: flex;
 `;
 
 const SelectFieldLabel = styled.label`

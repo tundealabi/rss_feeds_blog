@@ -3,8 +3,8 @@ import styled from 'styled-components';
 const RssFeedItemContainer = styled.div<{ isRead: boolean }>`
   align-items: center;
   border-bottom: 1px solid #ccc;
-  column-gap: 1rem;
   color: ${(props) => (props.isRead ? '#838B88' : '#000')};
+  column-gap: 1rem;
   cursor: ${(props) => (props.isRead ? 'default' : 'pointer')};
   display: flex;
   margin-bottom: 1rem;
@@ -19,8 +19,8 @@ const RssFeedItemImage = styled.img`
 
 const RssFeedItemContainerRight = styled.div`
   display: flex;
-  row-gap: 0.6rem;
   flex-direction: column;
+  row-gap: 0.6rem;
 `;
 
 const RssFeedItemTitle = styled.h3`

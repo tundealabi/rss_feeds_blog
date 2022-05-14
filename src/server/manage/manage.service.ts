@@ -12,6 +12,7 @@ export class ManageService {
     @InjectModel(Manage.name) private manageModel: Model<ManageDocument>,
     private readonly eventEmitter: EventEmitter2,
   ) {}
+  //update the polling frequency
   async setPollingFrequency(
     dto: SetPollingFrequencyDto,
   ): Promise<ManageDocument> {
@@ -31,6 +32,7 @@ export class ManageService {
     );
     return manage;
   }
+  //update the preview length
   async setPreviewLength(dto: SetPreviewLengthDto): Promise<ManageDocument> {
     const manage = await this.manageModel.findOneAndUpdate(
       {},
@@ -44,6 +46,7 @@ export class ManageService {
     );
     return manage;
   }
+  //get the manage data - polling frequency and preview length
   async getManageData(): Promise<ManageDocument> {
     const manage = await this.manageModel.findOne({});
     return manage;

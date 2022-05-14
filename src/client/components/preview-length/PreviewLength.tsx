@@ -21,9 +21,8 @@ const PreviewLength = () => {
       const resp = await axios.patch('/manage/set-preview-length', {
         previewLength,
       });
-      console.log(resp.data);
-    } catch (error) {
-      console.log('error', error);
+    } catch (error: any) {
+      console.log('error', error.message);
     }
   };
   useEffect(() => {
