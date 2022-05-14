@@ -10,6 +10,7 @@ export class ViewService implements OnModuleInit {
 
   constructor(private configService: ConfigService) {}
 
+  // nextjs setup
   async onModuleInit(): Promise<void> {
     try {
       this.server = createServer({
@@ -18,6 +19,7 @@ export class ViewService implements OnModuleInit {
       });
       await this.server.prepare();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   }

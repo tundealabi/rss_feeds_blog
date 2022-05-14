@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Req } from '@nestjs/common';
+import { Controller, Get, Res, Req, Redirect } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ViewService } from './view.service';
 
@@ -6,8 +6,19 @@ import { ViewService } from './view.service';
 export class ViewController {
   constructor(private viewService: ViewService) {}
 
-  @Get('home')
-  public async showHome(@Req() req: Request, @Res() res: Response) {
+  @Redirect()
+  @Get()
+  public async index() {
+    return {
+      url: '/following',
+    };
+  }
+  @Get('following')
+  public async showFollowing(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
+  @Get('following/manage')
+  public async showManage(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 
