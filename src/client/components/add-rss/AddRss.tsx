@@ -41,7 +41,10 @@ const AddRss = () => {
           type="url"
           required
           value={url}
-          onChange={(ev) => setUrl(ev.target.value)}
+          onChange={(ev) => {
+            setUrl(ev.target.value);
+            setError('');
+          }}
         />
         <AddRssInputFieldHelperText error={error}>
           {error}

@@ -22,7 +22,7 @@ const AddRssInputFieldHelperText = styled.p<{ error: string }>`
 
 const AddRssButton = styled.button`
   border-radius: 1.875rem;
-  /* border-radius: 0.4rem; */
+  cursor: pointer;
   height: 2.375rem;
   width: 9.375rem;
 `;

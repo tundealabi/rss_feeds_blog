@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useManage } from '../../hooks';
 import SelectOptions from '../select-options/SelectOptions';
 
 const options = [
@@ -11,13 +13,30 @@ const options = [
 ];
 
 const PollingFrequency = () => {
+  const { manageData } = useManage();
   const [value, setValue] = useState('');
+  const handleSetPollingFrequency = async (frequency: string) => {
+    setValue(frequency);
+    try {
+      const resp = await axios.patch('/manage/set-polling-frequency', {
+        frequency,
+      });
+      console.log(resp.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+  useEffect(() => {
+    if (manageData) {
+      setValue(manageData.pollingFrequency);
+    }
+  }, [manageData?.pollingFrequency]);
   return (
     <SelectOptions
       value={value}
       options={options}
       label="polling frequency"
-      onChange={setValue}
+      onChange={handleSetPollingFrequency}
     />
   );
 };

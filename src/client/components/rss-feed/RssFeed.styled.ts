@@ -33,8 +33,8 @@ const RssFeedSiteLink = styled.a`
 `;
 
 const RssFeedDeleteButton = styled.button`
-  /* border-radius: 1.875rem; */
   border-radius: 0.4rem;
+  cursor: pointer;
   height: 2.375rem;
   width: 4.375rem;
   margin-top: 1rem;

@@ -4,11 +4,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { RssFeed, RssFeedDocument } from './schema';
 import { CreateRssFeedDto } from './dto';
 import { RssParserService } from '../rss-parser/rss-parser.service';
+import { ManageService } from '../manage/manage.service';
 
 @Injectable()
 export class RssFeedService {
   constructor(
     @InjectModel(RssFeed.name) private rssFeedModel: Model<RssFeedDocument>,
+    private readonly manageService: ManageService,
     private readonly rssParserService: RssParserService,
   ) {}
   async create(createRssFeedDto: CreateRssFeedDto): Promise<RssFeed> {
@@ -30,7 +32,11 @@ export class RssFeedService {
   }
   async getAll(): Promise<RssFeed[]> {
     const rssFeeds = await this.rssFeedModel.find().exec();
-    return rssFeeds;
+    const manage = await this.manageService.getManageData();
+    return rssFeeds.map((rssFeed) => {
+      rssFeed.items = rssFeed.items.slice(0, Number(manage.previewLength));
+      return rssFeed;
+    });
   }
   async deleteById(id: string): Promise<{ id: string; success: boolean }> {
     const deletedRssFeed = await this.rssFeedModel.findByIdAndRemove(id);

@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useManage } from '../../hooks';
 import SelectOptions from '../select-options/SelectOptions';
 
 const options = [
@@ -11,13 +13,30 @@ const options = [
 ];
 
 const PreviewLength = () => {
+  const { manageData } = useManage();
   const [value, setValue] = useState('');
+  const handleSetPreviewLength = async (previewLength: string) => {
+    setValue(previewLength);
+    try {
+      const resp = await axios.patch('/manage/set-preview-length', {
+        previewLength,
+      });
+      console.log(resp.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+  useEffect(() => {
+    if (manageData) {
+      setValue(manageData.previewLength);
+    }
+  }, [manageData?.previewLength]);
   return (
     <SelectOptions
       value={value}
       options={options}
       label="preview length"
-      onChange={setValue}
+      onChange={handleSetPreviewLength}
     />
   );
 };

@@ -38,4 +38,3 @@ export class RssFeed {
 }
 
 export const RssFeedSchema = SchemaFactory.createForClass(RssFeed);
-// export const RssFeedItemSchema = SchemaFactory.createForClass(Feed);

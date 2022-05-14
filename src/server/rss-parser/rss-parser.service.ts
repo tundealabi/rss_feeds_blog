@@ -31,7 +31,7 @@ export class RssParserService {
       link: feed.link,
       image: feed.image.url,
       items: feed.items
-        .slice(0, 10)
+        .slice(0, 6)
         .map((item) => ({
           title: item.title,
           description: item.contentSnippet,
